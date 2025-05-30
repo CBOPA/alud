@@ -1,0 +1,65 @@
+site_name: Навигация и управление мобильными роботами. Курсовой проект
+site_url: https://alud.github.io/alud
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: green
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Переключиться на тёмный режим
+    # Тёмный режим
+    - scheme: slate
+      primary: green
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Переключиться на светлый режим
+  language: ru
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.expand
+    - toc.follow
+  direction: ltr
+plugins:
+  - search:
+      lang: ru
+
+# Структура навигации
+nav:
+  - Главная: index.md
+  - Теоретическая часть:
+      - Описание: theory/description.md
+      - Принцип работы:
+        - Общее описание: theory/principe.md
+        - Фильтр Калмана: theory/kalman.md
+        - Блок обнаружения признаков: theory/feature_detector.md
+  - Практическая часть:
+      - Установка проекта:
+        - Чистая установка: practice/installation.md
+        - Установка с использованием Docker: practice/docker_installation.md
+      - Запуск проекта: practice/start.md
+      - Эксперимент: practice/experiment.md
+  - Проблемы:
+    - Решенные проблемы: about/troubles.md
+
+
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+markdown_extensions:
+  - admonition
+  - codehilite        # Подсветка синтаксиса кода
+  - toc:              # Оглавление
+      permalink: true # Постоянные ссылки для заголовков
+  - pymdownx.superfences  # Поддержка вложенных блоков кода
+  - pymdownx.tabbed       # Вкладки для контента
+  - pymdownx.details      # Сворачиваемые блоки
+  - pymdownx.emoji        # Поддержка эмодзи
+  - pymdownx.tasklist:    # Списки задач
+      custom_checkbox: true
+  - mdx_math              # Формулы в LaTex
