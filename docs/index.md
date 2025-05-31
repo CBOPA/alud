@@ -1,5 +1,7 @@
 # Курсовой проект по дисциплине "Навигация и управление мобильными роботами"
 
+**Курсовой проект на тему "Автономная посадка беспилотного летального аппарата"**
+
 Данная работа выполнена студентом МГТУ "СТАНКИН" Юлаевым В.Д. из группы АДМ-24-05. Выполнена в формате `Markdown`
 
 ## **Актуальность работы**
@@ -9,8 +11,8 @@
 ## **Ссылки на проекты** 
 * Исходный репозиторий: [autonomous_landing_uav](https://github.com/MikeS96/autonomous_landing_uav)
 * Репозиторий курсового проекта: [alud](https://github.com/CBOPA/alud)
-* Репозиторий отчета: [alud.github.io](https://github.com/CBOPA/alud.github.io)
-* Ссылка на сайт отчета: https://alud.github.io/alud
+* Репозиторий отчета: [aludk](https://github.com/CBOPA/aludk)
+* Ссылка на сайт отчета: [https://cbopa.github.io/aludk/](https://cbopa.github.io/aludk/)
 
 ## **Оглавление**
 
@@ -26,7 +28,8 @@
         - [Установка с использованием Docker](practice/docker_installation.md)
       - [Запуск проекта](practice/start.md)
       - [Эксперимент](practice/experiment.md)
-
+  - Проблемы:
+      - [Решенные проблемы](about/troubles.md)
 
 
 
