@@ -18,9 +18,8 @@ RUN apt-get update && apt-get install -y \
     software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 
-# OpenCV 4.2.0 + contrib
-RUN git clone --branch 4.2.0 https://github.com/opencv/opencv.git /opencv && \
-    git clone --branch 4.2.0 https://github.com/opencv/opencv_contrib.git /opencv_contrib && \
+RUN git clone https://github.com/opencv/opencv.git /opencv && \
+    git clone https://github.com/opencv/opencv_contrib.git /opencv_contrib && \
     mkdir /opencv/build && cd /opencv/build && \
     cmake -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -31,8 +30,8 @@ RUN git clone --branch 4.2.0 https://github.com/opencv/opencv.git /opencv && \
           -D INSTALL_C_EXAMPLES=OFF \
           -D BUILD_opencv_python3=ON \
           .. && \
-    make -j$(nproc) && make install && ldconfig && \
-    rm -rf /opencv /opencv_contrib
+    make -j$(nproc) && make install && ldconfig
+
 
 # PX4-Autopilot
 RUN git clone https://github.com/PX4/PX4-Autopilot.git ${HOME}/PX4-Autopilot
@@ -50,10 +49,24 @@ RUN wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/
     chmod +x install_geographiclib_datasets.sh && \
     ./install_geographiclib_datasets.sh && rm install_geographiclib_datasets.sh
 
+# RUN apt-get update && \
+#     apt-get install -y ros-${ROS_DISTRO}-find-object-2d ros-noetic-mavros ros-noetic-mavros-extras ros-noetic-vision-opencv ros-noetic-teleop-twist-keyboard && \
+#     apt-get clean
+
+RUN apt-get update && \
+    apt-get install -y ros-noetic-mavros ros-noetic-mavros-extras ros-noetic-teleop-twist-keyboard && \
+    apt-get clean
+
 # ROS workspace
 RUN mkdir -p ${HOME}/catkin_ws/src
 RUN cd ${HOME}/catkin_ws/src && \
     git clone https://github.com/MikeS96/autonomous_landing_uav.git
+
+RUN git clone https://github.com/introlab/find-object.git ${HOME}/catkin_ws/src/find-object
+
+RUN sed -i '30i #include <QtCore/QElapsedTimer>' /home/root/catkin_ws/src/find-object/src/FindObject.cpp
+
+RUN git clone -b noetic https://github.com/ros-perception/vision_opencv.git ${HOME}/catkin_ws/src/vision-opencv
 
 RUN cd ${HOME}/catkin_ws && \
     /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && catkin_init_workspace" && \
@@ -91,18 +104,7 @@ RUN sed -i '/set(models / s/)/ quad_f450_camera)/' \
 RUN cd ${HOME}/PX4-Autopilot && \
     make px4_sitl_default gazebo
 
-
 RUN rm -f ${HOME}/catkin_ws/CMakeLists.txt
-RUN mkdir -p ${HOME}/catkin_ws/src
-RUN rm -rf ${HOME}/catkin_ws/src
-
-RUN apt-get update && \
-    apt-get install -y ros-${ROS_DISTRO}-find-object-2d && \
-    apt-get clean
-# Клонирование репозитория в src
-RUN git clone https://github.com/MikeS96/autonomous_landing_uav.git ${HOME}/catkin_ws/src/autonomous_landing_uav
-
-
 
 RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
     cd ${HOME}/catkin_ws/src && \
@@ -113,13 +115,10 @@ RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
     rosdep update && \
     rosdep install --from-paths src --ignore-src -r -y"
 
-RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
-    cd ${HOME}/catkin_ws && \
-    catkin_make"
 
-RUN apt-get update && \
-    apt-get install -y ros-noetic-mavros ros-noetic-mavros-extras ros-noetic-vision-opencv ros-noetic-teleop-twist-keyboard && \
-    apt-get clean
+RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
+    cd ${HOME}/catkin_ws/ && \
+    catkin_make"
 
 RUN wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh && \
     chmod +x install_geographiclib_datasets.sh && \
