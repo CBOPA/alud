@@ -10,12 +10,10 @@ fi
 if [ -z "$(git status --porcelain)" ]; then
   echo "Рабочая директория чиста. Нечего коммитить."
 else
-  git add .
-
   echo "Введите сообщение коммита:"
   read commit_message
 
-  git commit -m "$commit_message"
+  git commit -a -m "$commit_message"
 
   # Отправляем в ветку main
   git push origin main
